@@ -34,7 +34,6 @@ import tensorflow as tf
 
 from tensorflow_hub import resolver
 
-vprint = lambda x: print("\t"+str(x))
 
 LOCK_FILE_TIMEOUT_SEC = 10 * 60  # 10 minutes
 
@@ -80,13 +79,12 @@ class HttpCompressedFileResolver(resolver.Resolver):
 
   def _get_module_path(self, handle):
     module_dir = _module_dir(self._cache_dir, handle)
-    
+
     def download(handle, tmp_dir):
       """Fetch a module via HTTP(S), handling redirect and download headers."""
-      print("[FUNC] HttpCompressedFileResolver._get_module_path.download ...")
       cur_url = handle
       request = url.Request(_append_compressed_format_query(handle))
-      vprint(request)
+
       # Look for and handle a special response header. If present, interpret it
       # as a redirect to the module download location. This allows publishers
       # (if they choose) to provide the same URL for both a module download and
