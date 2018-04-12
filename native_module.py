@@ -43,8 +43,6 @@ from tensorflow.python.framework import op_def_registry
 from tensorflow.python import pywrap_tensorflow as c_api
 # pylint: enable=g-bad-import-order
 
-vprint = lambda x: print("\t"+str(x))
-
 _MODULE_PROTO_FILENAME_PB = "tfhub_module.pb"
 
 _MODULE_V3_SUPPORTED_FEATURES = frozenset([])  # None yet.
@@ -98,11 +96,8 @@ def load_module_spec(path):
     ValueError: on unexpected values in the module spec.
     tf.OpError: on file handling exceptions.
   """
-  print("[FUNC] load_module_spec ...")
-  vprint(path)
   path = compressed_module_resolver.get_default().get_module_path(path)
   module_def_path = _get_module_proto_path(path)
-  vprint(module_def_path)
   module_def_proto = module_def_pb2.ModuleDef()
   with tf.gfile.Open(module_def_path, "rb") as f:
     module_def_proto.ParseFromString(f.read())
@@ -119,7 +114,6 @@ def load_module_spec(path):
 
   saved_model_handler = saved_model_lib.load(path)
   checkpoint_filename = saved_model_lib.get_variables_path(path)
-  vprint(checkpoint_filename)
   return _ModuleSpec(saved_model_handler, checkpoint_filename)
 
 
